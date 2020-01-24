@@ -26,6 +26,10 @@ namespace MIDI_SysEx
             foreach(OutputDevice device in OutputDevice.InstalledDevices)
             {
                 lbDevices.Items.Add(device);
+                if (device.Name == "Akai APC20")
+                {
+                    lbDevices.SelectedIndex = lbDevices.Items.Count - 1;
+                }
             }
 
 
@@ -33,25 +37,24 @@ namespace MIDI_SysEx
 
         private void lbDevices_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
         private void btnGeneric_Click(object sender, EventArgs e)
         {
-            SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x40, 0x41, 0x08, 0x02, 0x01, 0xF7 });
-            // -------------------------------------------------------^  0x40 for Generic mode
+            SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x04, 0x40, 0x08, 0x02, 0x01, 0xF7 });
+            // --------------------------------------------------------------^  0x40 for Generic mode
         }
 
         private void btnAbleton_Click(object sender, EventArgs e)
         {
-            SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x41, 0x41, 0x08, 0x02, 0x01, 0xF7 });
-            // -------------------------------------------------------^  0x41 for Ableton Live Mode
+            SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x04, 0x41, 0x08, 0x02, 0x01, 0xF7 });
+            // ----------------------------------------------------------------^  0x41 for Ableton Live Mode
         }
 
         private void btnAltAbleton_Click(object sender, EventArgs e)
         {
-            SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x42, 0x41, 0x08, 0x02, 0x01, 0xF7 });
-            // -------------------------------------------------------^  0x42 for Alternate Ableton Live Mode
+            SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x04, 0x41, 0x08, 0x02, 0x01, 0xF7 });
+            // -----------------------------------------------------------------^  0x42 for Alternate Ableton Live Mode
         }
 
         private void SendMode(byte[] modeSysEx)
@@ -62,14 +65,37 @@ namespace MIDI_SysEx
             {
                 selectedDevice.Open();
 
-                selectedDevice.SendSysEx(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x41, 0x41, 0x08, 0x02, 0x01, 0xF7 });
+                try
+                {
+                    selectedDevice.SendSysEx(modeSysEx);
+                }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show("An error occurred while sending the SysEx message to " + selectedDevice.Name + ".", "Error");
+                }
+                finally
+                {
+                    selectedDevice.Close();
+                }
             }
-            catch (Exception ex)
+            catch
             {
-                MessageBox.Show(ex.Message, "Error");
+                MessageBox.Show("An error occurred while attempting to open " + selectedDevice.Name + ".  Be sure another application isn't currently accessing it.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+
+
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
 
+        }
+
+        private void btnExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
