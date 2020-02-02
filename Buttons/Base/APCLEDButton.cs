@@ -10,8 +10,12 @@ namespace MIDI_SysEx
     /// <summary>
     /// concrete class representing an LED button
     /// </summary>
+    [Serializable]
     public abstract class APCLEDButton : IAPCLEDButton
     {
+        [NonSerialized]
+        System.Windows.Forms.Button parent;
+
         public APCLEDButton(string name, Channel channel, Pitch noteNumber, IEnumerable<IAPCLEDButtonOption> options)
         {
             Name = name;
@@ -31,7 +35,7 @@ namespace MIDI_SysEx
 
         public int SelectedOptionIndex { get; private set; }
 
-        public System.Windows.Forms.Button Parent { get; private set; }
+        public System.Windows.Forms.Button Parent { get { return parent; } private set { parent = value; } }
 
         public void SetSelectedOption(int index)
         {
@@ -64,6 +68,7 @@ namespace MIDI_SysEx
         }
         
         //declare event
+        [field:NonSerialized]
         public event EventHandler SelectedOptionChanged;
 
         protected virtual void OnSelectedOptionChanged()

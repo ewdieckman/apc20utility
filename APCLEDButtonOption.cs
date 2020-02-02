@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 
 namespace MIDI_SysEx
@@ -5,6 +6,7 @@ namespace MIDI_SysEx
     /// <summary>
     /// concrete class of options for an APC LED Button
     /// </summary>
+    [Serializable]
     public class APCLEDButtonOption : IAPCLEDButtonOption
     {
         public static APCLEDButtonOption OFF = new APCLEDButtonOption(Color.White, false, 0);

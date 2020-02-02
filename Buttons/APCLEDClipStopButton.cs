@@ -1,4 +1,5 @@
 using Midi;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -7,6 +8,7 @@ namespace MIDI_SysEx.Buttons
     /// <summary>
     /// Clip launch 5 button for each track
     /// </summary>
+    [Serializable]
     public class APCLEDClipStopButton : APCLEDTrackButton
     {
         public APCLEDClipStopButton(int trackNumber) : 

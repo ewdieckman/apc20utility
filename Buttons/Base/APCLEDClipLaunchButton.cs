@@ -1,4 +1,5 @@
 using Midi;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -7,6 +8,7 @@ namespace MIDI_SysEx.Buttons
     /// <summary>
     /// base class for all track clip launch buttons
     /// </summary>
+    [Serializable]
     public abstract class APCLEDClipLaunchButton : APCLEDTrackButton
     {
         public APCLEDClipLaunchButton(int trackNumber, int clipLaunchNumber, Pitch noteNumber)

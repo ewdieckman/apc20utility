@@ -1,4 +1,5 @@
 using Midi;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -7,6 +8,7 @@ namespace MIDI_SysEx.Buttons
     /// <summary>
     /// LED Button used per-track
     /// </summary>
+    [Serializable]
     public class APCLEDTrackButton : APCLEDButton, IAPCLEDButton
     {
         

@@ -31,6 +31,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>lismusica_akai_logopng_20150210104733_Sp6_icon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -72,6 +75,7 @@
     </Compile>
     <Compile Include="Interfaces\IAPCLEDButtonOption.cs" />
     <Compile Include="Interfaces\IAPCLEDButton.cs" />
+    <Compile Include="lib\BinarySerialization.cs" />
     <Compile Include="MIDILib\Channel.cs" />
     <Compile Include="MIDILib\Chord.cs" />
     <Compile Include="MIDILib\Clock.cs" />
@@ -117,6 +121,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="lismusica_akai_logopng_20150210104733_Sp6_icon.ico" />
     <Content Include="MIDILib\README.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

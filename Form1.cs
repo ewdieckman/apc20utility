@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Midi;
 using MIDI_SysEx.Buttons;
+using MIDI_SysEx.lib;
 
 namespace MIDI_SysEx
 {
@@ -103,12 +104,18 @@ namespace MIDI_SysEx
             usedButtons.Add(btn.Name, btn);
         }
 
+        /// <summary>
+        /// Populates the <see cref="Button"/> dictionary with all of the buttons on the form
+        /// </summary>
         public void PopulateButtonDictionary()
         {
             var buttons = GetAll(this, typeof(Button)).ToList();
             allButtons = buttons.ToDictionary(x => x.Name, x => (Button)x);
         }
 
+        /// <summary>
+        /// Recursive method getting all the <see cref="Button"/> controls in the form
+        /// </summary>
         public IEnumerable<System.Windows.Forms.Control> GetAll(System.Windows.Forms.Control control, Type type)
         {
             var controls = control.Controls.Cast<System.Windows.Forms.Control>();
@@ -119,20 +126,51 @@ namespace MIDI_SysEx
 
         private void btnGeneric_Click(object sender, EventArgs e)
         {
-            SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x04, 0x40, 0x08, 0x02, 0x01, 0xF7 });
-            // --------------------------------------------------------------^  0x40 for Generic mode
+            try
+            {
+                SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x04, 0x40, 0x08, 0x02, 0x01, 0xF7 });
+                // --------------------------------------------------------------^  0x40 for Generic mode
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error ocurred while changing to Generic mode: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            MessageBox.Show("Generic mode signal sent to selected device successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+
         }
 
         private void btnAbleton_Click(object sender, EventArgs e)
         {
-            SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x04, 0x41, 0x08, 0x02, 0x01, 0xF7 });
-            // ----------------------------------------------------------------^  0x41 for Ableton Live Mode
+            try
+            {
+                SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x04, 0x41, 0x08, 0x02, 0x01, 0xF7 });
+                // ----------------------------------------------------------------^  0x41 for Ableton Live Mode
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error ocurred while changing to Ableton Live mode: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            MessageBox.Show("Ableton Live mode signal sent to selected device successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
         }
 
         private void btnAltAbleton_Click(object sender, EventArgs e)
         {
-            SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x04, 0x42, 0x08, 0x02, 0x01, 0xF7 });
-            // -----------------------------------------------------------------^  0x42 for Alternate Ableton Live Mode
+            
+            try
+            {
+                SendMode(new byte[] { 0xF0, 0x47, 0x7F, 0x7B, 0x60, 0x00, 0x04, 0x42, 0x08, 0x02, 0x01, 0xF7 });
+                // -----------------------------------------------------------------^  0x42 for Alternate Ableton Live Mode
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error ocurred while changing to Alternate Ableton Live mode: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            MessageBox.Show("Alternate Ableton Live mode signal sent to selected device successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -166,10 +204,6 @@ namespace MIDI_SysEx
             if (((MouseEventArgs)e).Button == MouseButtons.Right || led.SelectedOptionIndex == (led.AvailableOptions.Count - 1))
             {
                 index = -1;
-                //btn.BackColor = SystemColors.Control;
-                //btn.Text = "";
-                //led.SetSelectedOption(index);
-                //TurnOffLED(led.Channel, led.NoteNumber);
             }
             else
             { 
@@ -178,11 +212,6 @@ namespace MIDI_SysEx
                 else 
                     index = led.SelectedOptionIndex + 1;
 
-                
-                //var option = led.SelectedOption;
-                //btn.BackColor = option.Color;
-                //btn.Text = option.IsBlinking ? "(B)" : "";
-                //TurnOnLED(led, option);
             }
 
             led.SetSelectedOption(index);
@@ -303,13 +332,17 @@ namespace MIDI_SysEx
                 }
             }
 
-
             ButtonClickEventHandler = new EventHandler(APCButton_Click);
             ButtonMouseDownEventHandler = new MouseEventHandler(APCButton_MouseDown);
             SelectedOptionChangedEventHandler = new EventHandler(LEDButtonSelectedOptionChanged);
 
+            dlgOpen.FileOk += new CancelEventHandler(dlgOpen_FileOk);
+            dlgSave.FileOk += new CancelEventHandler(dlgSave_FileOk);
+
             LoadLEDButtons();
         }
+
+
 
         /// <summary>
         /// Click event handler for the Exit button
@@ -366,6 +399,61 @@ namespace MIDI_SysEx
                 led.TurnOffButton();
             }
                 
+        }
+
+        private void btnOpen_Click(object sender, EventArgs e)
+        {
+            dlgOpen.ShowDialog();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            dlgSave.ShowDialog();
+        }
+
+        private void dlgSave_FileOk(object sender, CancelEventArgs e)
+        {
+            SaveConfig(dlgSave.FileName);
+        }
+
+        private void dlgOpen_FileOk(object sender, CancelEventArgs e)
+        {
+            OpenConfig(dlgOpen.FileName);
+        }
+
+        /// <summary>
+        /// method to persist the config to the specified filename
+        /// </summary>
+        private void SaveConfig(string filename)
+        {
+            try
+            {
+                var serializable_dict = usedButtons.ToDictionary(x => x.Key, x => (IAPCLEDButton)x.Value.Tag);
+                BinarySerialization.WriteToBinaryFile(filename, serializable_dict);
+                MessageBox.Show($"Config saved to {filename}.", "Config Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error saving config to {filename}. {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        /// <summary>
+        /// method to take persisted config and load into the GUI (and send to APC)
+        /// </summary>
+        private void OpenConfig(string filename)
+        {
+            var loadedButtons = BinarySerialization.ReadFromBinaryFile<Dictionary<string, IAPCLEDButton>>(filename);
+
+            foreach(string key in loadedButtons.Keys)
+            {
+                if (usedButtons.TryGetValue(key, out Button value))
+                {
+                    loadedButtons.TryGetValue(key, out IAPCLEDButton loaded_value);
+                    ((IAPCLEDButton)value.Tag).SetSelectedOption(loaded_value.SelectedOptionIndex);
+                }
+
+            }
         }
     }
 }

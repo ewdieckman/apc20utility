@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.lbDevices = new System.Windows.Forms.ListBox();
             this.btnGeneric = new System.Windows.Forms.Button();
             this.btnAbleton = new System.Windows.Forms.Button();
@@ -131,6 +132,10 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.btnClearAll = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnOpen = new System.Windows.Forms.Button();
+            this.dlgOpen = new System.Windows.Forms.OpenFileDialog();
+            this.dlgSave = new System.Windows.Forms.SaveFileDialog();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -194,10 +199,10 @@
             // 
             // btnExit
             // 
-            this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExit.Location = new System.Drawing.Point(363, 622);
+            this.btnExit.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExit.Location = new System.Drawing.Point(535, 295);
             this.btnExit.Name = "btnExit";
-            this.btnExit.Size = new System.Drawing.Size(170, 35);
+            this.btnExit.Size = new System.Drawing.Size(92, 35);
             this.btnExit.TabIndex = 6;
             this.btnExit.Text = "Exit";
             this.btnExit.UseVisualStyleBackColor = true;
@@ -1112,7 +1117,7 @@
             this.btnClearAll.FlatAppearance.BorderColor = System.Drawing.Color.Red;
             this.btnClearAll.FlatAppearance.BorderSize = 2;
             this.btnClearAll.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearAll.Location = new System.Drawing.Point(527, 224);
+            this.btnClearAll.Location = new System.Drawing.Point(535, 422);
             this.btnClearAll.Name = "btnClearAll";
             this.btnClearAll.Size = new System.Drawing.Size(92, 89);
             this.btnClearAll.TabIndex = 105;
@@ -1120,11 +1125,45 @@
             this.btnClearAll.UseVisualStyleBackColor = true;
             this.btnClearAll.Click += new System.EventHandler(this.btnClearAll_Click);
             // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(535, 229);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(92, 29);
+            this.btnSave.TabIndex = 106;
+            this.btnSave.Text = "Save Config";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnOpen
+            // 
+            this.btnOpen.Location = new System.Drawing.Point(535, 178);
+            this.btnOpen.Name = "btnOpen";
+            this.btnOpen.Size = new System.Drawing.Size(92, 32);
+            this.btnOpen.TabIndex = 107;
+            this.btnOpen.Text = "Import Config";
+            this.btnOpen.UseVisualStyleBackColor = true;
+            this.btnOpen.Click += new System.EventHandler(this.btnOpen_Click);
+            // 
+            // dlgOpen
+            // 
+            this.dlgOpen.FileName = "openFileDialog1";
+            this.dlgOpen.Filter = "APC20 files|*.apc20|All files|*.*";
+            this.dlgOpen.Title = "Open APC20 Config File";
+            // 
+            // dlgSave
+            // 
+            this.dlgSave.DefaultExt = "*.apc20";
+            this.dlgSave.Filter = "APC20 files|*.apc20|All files|*.*";
+            this.dlgSave.Title = "Save APC Config File";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(646, 677);
+            this.Controls.Add(this.btnOpen);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnClearAll);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
@@ -1179,9 +1218,12 @@
             this.Controls.Add(this.btnAbleton);
             this.Controls.Add(this.btnGeneric);
             this.Controls.Add(this.lbDevices);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "APC20 Midi Mode Switcher";
+            this.Text = "APC20 Config Tool";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
@@ -1295,6 +1337,10 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btnClearAll;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnOpen;
+        private System.Windows.Forms.OpenFileDialog dlgOpen;
+        private System.Windows.Forms.SaveFileDialog dlgSave;
     }
 }
 

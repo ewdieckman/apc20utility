@@ -1,4 +1,5 @@
 using Midi;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -7,6 +8,7 @@ namespace MIDI_SysEx.Buttons
     /// <summary>
     /// Record/Arm button
     /// </summary>
+    [Serializable]
     public class APCLEDRecordArmButton : APCLEDTrackButton
     {
         public APCLEDRecordArmButton(int trackNumber) : 

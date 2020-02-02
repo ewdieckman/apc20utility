@@ -1,9 +1,11 @@
 using Midi;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
 namespace MIDI_SysEx.Buttons
 {
+    [Serializable]
     public class APCLEDActivatorButton: APCLEDTrackButton
     {
         public APCLEDActivatorButton(int trackNumber) :
