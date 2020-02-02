@@ -43,12 +43,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Buttons\APCLEDClipStopButton.cs" />
+    <Compile Include="Buttons\APCLEDSceneLaunch5Button.cs" />
+    <Compile Include="Buttons\APCLEDSceneLaunch4Button.cs" />
+    <Compile Include="Buttons\APCLEDSceneLaunch3Button.cs" />
+    <Compile Include="Buttons\APCLEDSceneLaunch2Button.cs" />
+    <Compile Include="Buttons\APCLEDSceneLaunch1Button.cs" />
+    <Compile Include="Buttons\APCLEDMasterButton.cs" />
+    <Compile Include="Buttons\APCLEDTrackSelectionButton.cs" />
+    <Compile Include="Buttons\APCLEDActivatorButton.cs" />
+    <Compile Include="Buttons\APCLEDSoloButton.cs" />
+    <Compile Include="Buttons\Base\APCLEDButton.cs" />
+    <Compile Include="APCLEDButtonOption.cs" />
+    <Compile Include="Buttons\APCLEDClipLaunch4Button.cs" />
+    <Compile Include="Buttons\APCLEDClipLaunch5Button.cs" />
+    <Compile Include="Buttons\APCLEDClipLaunch3Button.cs" />
+    <Compile Include="Buttons\APCLEDClipLaunch2Button.cs" />
+    <Compile Include="Buttons\APCLEDClipLaunch1Button.cs" />
+    <Compile Include="Buttons\Base\APCLEDClipLaunchButton.cs" />
+    <Compile Include="Buttons\APCLEDRecordArmButton.cs" />
+    <Compile Include="Buttons\Base\APCLEDSceneLaunchButton.cs" />
+    <Compile Include="Buttons\Base\APCLEDTrackButton.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\IAPCLEDButtonOption.cs" />
+    <Compile Include="Interfaces\IAPCLEDButton.cs" />
     <Compile Include="MIDILib\Channel.cs" />
     <Compile Include="MIDILib\Chord.cs" />
     <Compile Include="MIDILib\Clock.cs" />
